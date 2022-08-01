@@ -22,7 +22,6 @@
 
 import numpy as np
 from fileio import *
-#import xlrd
 import sys
 import os
 from unidecode import unidecode
@@ -38,17 +37,11 @@ import cartopy.feature as cfeature
 from shapely import geometry
 
 from datetime import timedelta,datetime
-#from pyhamtools.locator import locator_to_latlong
 from settings import *
 
 from dx.spot_processing import Station
 from latlon2maiden import *
 from utilities import freq2band
-
-################################################################################
-
-# User params
-
 
 ################################################################################
 
@@ -102,7 +95,6 @@ class PARAMS:
         #sys.exit(0)
         
 ################################################################################
-
 
 print("\n\n***********************************************************************************")
 print("\nStarting RBN Plotter  ...")
@@ -205,49 +197,6 @@ print('There are ',len(myspots),'spots belonging to',P.CALL,'\n')
 
 ################################################################################
 
-# Analyze sending speed
-print('\nSpeed analysis ...')
-speeds=[]
-for spot in allspots:
-    mode=spot['tx_mode'] 
-    if mode=='CW':
-        speed=int(spot['speed'])
-        speeds.append(speed)
-
-mu=np.mean(speeds)
-mn=np.min(speeds)
-mx=np.max(speeds)
-bins=range(mn,mx+1)
-
-fig, ax = plt.subplots()
-h,b,p=ax.hist(speeds,bins=bins)
-h=np.array(h).astype(int)
-print('\nSpeed Hist:')
-hbest=-1
-for bb,hh in zip(b,h):
-    print(bb,hh)
-    if hh>hbest:
-        mode=bb
-        hbest=hh
-        
-print('\nMean speed=',mu,' wpm')
-print('Min. speed=',mn,' wpm')
-print('Max. speed=',mx,' wpm')
-print('Most common speed=',mode,' wpm')
-
-fig.canvas.set_window_title('Runner Speed Distribution')
-ax.set_title('CW Speed Distribution for '+fname+'\nfrom '+str(date0)+' to '+str(date1))
-ax.grid(True)
-ax.set_xlabel('WPM')
-ax.set_ylabel('Count')
-ax.set_xlim(20,50)
-
-plt.show()
-    
-#sys.exit(0)
-
-################################################################################
-
 # Create the map
 print('\nGenerating map ...')
 fig = plt.figure()
@@ -323,5 +272,47 @@ ax.plot(x,y,'o',color='orange')
         
 plt.show()
 
-sys.exit(0)
+#sys.exit(0)
+
+################################################################################
+
+# Analyze sending speeds
+print('\nSpeed analysis ...')
+speeds=[]
+for spot in allspots:
+    mode=spot['tx_mode'] 
+    if mode=='CW':
+        speed=int(spot['speed'])
+        speeds.append(speed)
+
+mu=np.mean(speeds)
+mn=np.min(speeds)
+mx=np.max(speeds)
+bins=range(mn,mx+1)
+
+fig, ax = plt.subplots()
+h,b,p=ax.hist(speeds,bins=bins)
+h=np.array(h).astype(int)
+print('\nSpeed Hist:')
+hbest=-1
+for bb,hh in zip(b,h):
+    print(bb,hh)
+    if hh>hbest:
+        mode=bb
+        hbest=hh
+        
+print('\nMean speed=',mu,' wpm')
+print('Min. speed=',mn,' wpm')
+print('Max. speed=',mx,' wpm')
+print('Most common speed=',mode,' wpm')
+
+fig.canvas.set_window_title('Runner Speed Distribution')
+ax.set_title('CW Speed Distribution for '+fname+'\nfrom '+str(date0)+' to '+str(date1))
+ax.grid(True)
+ax.set_xlabel('WPM')
+ax.set_ylabel('Spot Count')
+ax.set_xlim(10,50)
+
+plt.show()
+
     
