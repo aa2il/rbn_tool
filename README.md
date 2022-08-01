@@ -8,7 +8,7 @@ rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
 
 ![Screen Shot]( Docs/rbn.png)
 
-Inspired by some results presented by Tim, N3QE, I recently added a second plot showing the speed distribution of the spots in this time interval:
+Inspired by some results presented recently by N3QE on the CWops email reflector, I've added a second plot showing the speed distribution of the spots in this time interval:
 
 ![Screen Shot]( Docs/speed.png)
 
@@ -18,7 +18,7 @@ rbn_tool.py 2021080[78].csv -t1 18 -hours 12 -na
 
 ![Screen Shot]( Docs/naqpcw_aug2021.png)
 
-Update: Can now read RBN zip files directly without unpacking.  Here is the speed distribution for the recent IARU HF Championships
+Update: Can now read RBN zip files directly without unpacking.  Here is the speed distribution for the recent IARU HF Championships:
 
 rbn_tool.py 20220709.zip 20220710.zip -t1 12 -hours 24 -na
 
