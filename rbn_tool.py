@@ -23,7 +23,7 @@
 import numpy as np
 from fileio import *
 import sys
-import os
+#import os
 from unidecode import unidecode
 import argparse
 from pprint import pprint
@@ -238,30 +238,24 @@ shpfilename = shpreader.natural_earth(resolution='110m',
 states = shpreader.Reader(shpfilename).records()
 
 # Plot Spotters
-if True:
-    for key in spotter_info.keys():
-        lat=spotter_info[key]['LAT']
-        lon=spotter_info[key]['LON']
-        x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
-        ax.plot(x,y,'wo')
+for key in spotter_info.keys():
+    lat=spotter_info[key]['LAT']
+    lon=spotter_info[key]['LON']
+    x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
+    ax.plot(x,y,'wo')
 
 # Plot spotters that saw me
-if True:
-    for spot in myspots:
-        call=spot['callsign']        #.split('-')[0].upper()
-        lat=spotter_info[call]['LAT']
-        lon=spotter_info[call]['LON']
-        
-        freq=spot['freq']
-        band=freq2band(0.001*float(freq))
-        if band=='40m':
-            c='rx'
-        elif band=='20m':
-            c='b+'
-        else:
-            c='k.'
-        x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
-        ax.plot(x,y,c)
+colors={'160m':'y>', '80m':'g<', '40m':'rx', '20m':'b+', '15m':'mv', '10m':'c^'}
+for spot in myspots:
+    call=spot['callsign']        #.split('-')[0].upper()
+    lat=spotter_info[call]['LAT']
+    lon=spotter_info[call]['LON']
+    
+    freq=spot['freq']
+    band=freq2band(0.001*float(freq))
+    c=colors[band]
+    x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
+    ax.plot(x,y,c)
 
 # Plot my location        
 station = Station(P.CALL)
@@ -269,7 +263,9 @@ lat=station.latitude
 lon=-station.longitude
 x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
 ax.plot(x,y,'o',color='orange')
-        
+
+print('Legend:',colors)
+
 plt.show()
 
 #sys.exit(0)
