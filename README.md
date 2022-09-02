@@ -4,7 +4,7 @@ Tool to analyze the spot data from the Reverse Beacon Network.  I originally dev
 
 Example usage - To see where I was being heard while running during one of the recent CWTs (0300 session on July 28, 2022), first download the data for that day from https://www.reversebeacon.net/raw_data/ and then run
                                                 
-rbn_tool.py 20220728.zip -t1 3 -hours 1 -na
+rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
 
 -t1 specifies the start time in hours UTC
 -hours specifies the duration of the interval of interest
