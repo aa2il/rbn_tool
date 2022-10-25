@@ -17,3 +17,6 @@
 /readme.txt
 /spot_processing.log
 /#*
+/build/*
+/dist/rbn_tool
+/rbn_tool.spec
