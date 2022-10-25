@@ -21,9 +21,9 @@ Inspired by some results presented recently by N3QE on the CWops email reflector
 
 ![Screen Shot]( Docs/speed.png)
 
-Contests spanning multiple days are handled by specifying multiple spot files.  To see the speed distribution from last year's NAQP CW contest:
+Contests spanning multiple days are handled by specifying multiple spot files.  To see the speed distribution from this year's NAQP CW contest:
 
-rbn_tool.py 2021080[78].zip -t1 18 -hours 12 -na
+rbn_tool.py 2022080[67].zip -t1 18 -hours 12 -na
 
 ![Screen Shot]( Docs/naqpcw_aug2021.png)
 

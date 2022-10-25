@@ -23,7 +23,6 @@
 import numpy as np
 from fileio import *
 import sys
-#import os
 from unidecode import unidecode
 import argparse
 from pprint import pprint
@@ -31,6 +30,8 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 import matplotlib.patches as mpatches
+from matplotlib.image import imread
+
 import cartopy.io.shapereader as shpreader
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -205,7 +206,16 @@ proj=ccrs.PlateCarree(central_longitude=lon0)
 ax = fig.add_subplot(1, 1, 1,projection=proj)
 
 # Put a background image on for nice sea rendering.
-ax.stock_img()
+if False:
+    # This doesn't work under pyinstaller ...
+    ax.stock_img()
+else:
+    # ... so we load image directly instead
+    fname99='50-natural-earth-1-downsampled.png'
+    print('fname99=',fname99)
+    img = imread(fname99)
+    ax.imshow(img, origin='upper', transform=ccrs.PlateCarree(),
+              extent=[-180, 180, -90, 90])
 
 # Create a feature for States/Admin 1 regions at 1:50m from Natural Earth
 states_provinces = cfeature.NaturalEarthFeature(
@@ -238,14 +248,21 @@ shpfilename = shpreader.natural_earth(resolution='110m',
 states = shpreader.Reader(shpfilename).records()
 
 # Plot Spotters
+colors={'Spotters':'wo', '160m':'y>', '80m':'g<', '40m':'rx', '20m':'b+', '15m':'mv', '10m':'c^'}
+lines=[]
+labels=[]
 for key in spotter_info.keys():
     lat=spotter_info[key]['LAT']
     lon=spotter_info[key]['LON']
     x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
-    ax.plot(x,y,'wo')
+    lab='Spotters'
+    c=colors[lab]
+    line=ax.plot(x,y,c,label=lab)
+    if lab not in labels:
+        labels.append(lab)
+        lines.append(line[0])
 
 # Plot spotters that saw me
-colors={'160m':'y>', '80m':'g<', '40m':'rx', '20m':'b+', '15m':'mv', '10m':'c^'}
 for spot in myspots:
     call=spot['callsign']        #.split('-')[0].upper()
     lat=spotter_info[call]['LAT']
@@ -255,16 +272,22 @@ for spot in myspots:
     band=freq2band(0.001*float(freq))
     c=colors[band]
     x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
-    ax.plot(x,y,c)
+    line=ax.plot(x,y,c,label=band)
+    if band not in labels:
+        labels.append(band)
+        lines.append(line[0])
 
 # Plot my location        
 station = Station(P.CALL)
 lat=station.latitude
 lon=-station.longitude
 x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
-ax.plot(x,y,'o',color='orange')
+line=ax.plot(x,y,'o',color='orange',label=P.CALL)
+lines.append(line[0])
 
-print('Legend:',colors)
+# Legend
+#print('Legend:',colors)
+ax.legend(handles=lines,loc='lower right')
 
 plt.show()
 
