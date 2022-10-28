@@ -298,11 +298,15 @@ plt.show()
 # Analyze sending speeds
 print('\nSpeed analysis ...')
 speeds=[]
+speeds2=[]
 for spot in allspots:
     mode=spot['tx_mode'] 
     if mode=='CW':
         speed=int(spot['speed'])
         speeds.append(speed)
+        call=spot['dx']
+        if call==P.CALL:
+            speeds2.append(speed)
 
 mu=np.mean(speeds)
 mn=np.min(speeds)
@@ -310,12 +314,20 @@ mx=np.max(speeds)
 bins=range(mn,mx+1)
 
 fig, ax = plt.subplots()
-h,b,p=ax.hist(speeds,bins=bins)
-h=np.array(h).astype(int)
-print('\nSpeed Hist:')
+ax2 = ax.twinx()
+h,b,p=ax.hist(speeds,bins=bins,label='All Calls')
+#h,b,p=ax.hist(speeds,bins=bins,density=True,color='blue')
+h=np.array(h)
+
+h2,b2,p2=ax2.hist(speeds2,bins=bins,color='red',label=P.CALL,histtype='step')
+#h2,b2,p2=ax.hist(speeds2,bins=bins,density=True,color='red')
+#print('speeds2=',speeds2)
+#print('h2=',h2)
+
+#print('\nSpeed Hist:')
 hbest=-1
 for bb,hh in zip(b,h):
-    print(bb,hh)
+    #print(bb,hh)
     if hh>hbest:
         mode=bb
         hbest=hh
@@ -329,8 +341,11 @@ fig.canvas.set_window_title('Runner Speed Distribution')
 ax.set_title('CW Speed Distribution for '+fname+'\nfrom '+str(date0)+' to '+str(date1))
 ax.grid(True)
 ax.set_xlabel('WPM')
-ax.set_ylabel('Spot Count')
+ax.set_ylabel('Spot Histogram')
+#ax.set_ylabel('PMF')
 ax.set_xlim(10,50)
+ax.legend(loc='upper left')
+ax2.legend(loc='upper right')
 
 plt.show()
 
