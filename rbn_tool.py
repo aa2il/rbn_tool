@@ -87,7 +87,8 @@ class PARAMS:
             self.conts=['NA']
         else:
             self.conts=['NA','SA','OC','EU','AS','AF']
-            
+
+        self.CALL2=args.call
         if args.call==None:
             self.CALL  = self.SETTINGS['MY_CALL'].replace('/','_')
         else:
@@ -305,7 +306,7 @@ for spot in allspots:
         speed=int(spot['speed'])
         speeds.append(speed)
         call=spot['dx']
-        if call==P.CALL:
+        if call==P.CALL2:
             speeds2.append(speed)
 
 mu=np.mean(speeds)
@@ -314,15 +315,16 @@ mx=np.max(speeds)
 bins=range(mn,mx+1)
 
 fig, ax = plt.subplots()
-ax2 = ax.twinx()
 h,b,p=ax.hist(speeds,bins=bins,label='All Calls')
 #h,b,p=ax.hist(speeds,bins=bins,density=True,color='blue')
 h=np.array(h)
 
-h2,b2,p2=ax2.hist(speeds2,bins=bins,color='red',label=P.CALL,histtype='step')
-#h2,b2,p2=ax.hist(speeds2,bins=bins,density=True,color='red')
-#print('speeds2=',speeds2)
-#print('h2=',h2)
+if P.CALL2:
+    ax2 = ax.twinx()
+    h2,b2,p2=ax2.hist(speeds2,bins=bins,color='red',label=P.CALL,histtype='step')
+    #h2,b2,p2=ax.hist(speeds2,bins=bins,density=True,color='red')
+    #print('speeds2=',speeds2)
+    #print('h2=',h2)
 
 #print('\nSpeed Hist:')
 hbest=-1
@@ -345,7 +347,8 @@ ax.set_ylabel('Spot Histogram')
 #ax.set_ylabel('PMF')
 ax.set_xlim(10,50)
 ax.legend(loc='upper left')
-ax2.legend(loc='upper right')
+if P.CALL2:
+    ax2.legend(loc='upper right')
 
 plt.show()
 
