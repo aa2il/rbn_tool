@@ -2,7 +2,7 @@
 ################################################################################
 #
 # rbn.py - Rev 2.0
-# Copyright (C) 2022 by Joseph B. Attili, aa2il AT arrl DOT net
+# Copyright (C) 2022-3 by Joseph B. Attili, aa2il AT arrl DOT net
 #
 # GUI to plot spots from reverse beacon network
 #
@@ -73,6 +73,8 @@ class PARAMS:
                               type=int,default=24)
         arg_proc.add_argument("-na", help="NA only",
                               action='store_true')
+        arg_proc.add_argument("-grid", help="Grid Square",
+                              type=str,default=None)
         args = arg_proc.parse_args()
 
         self.SETTINGS,junk = read_settings('.keyerrc')
@@ -93,6 +95,8 @@ class PARAMS:
             self.CALL  = self.SETTINGS['MY_CALL'].replace('/','_')
         else:
             self.CALL  = args.call.upper()
+
+        self.GRIDSQ=args.grid
 
         #sys.exit(0)
         
@@ -212,7 +216,7 @@ if False:
     ax.stock_img()
 else:
     # ... so we load image directly instead
-    fname99='50-natural-earth-1-downsampled.png'
+    fname99='../data/50-natural-earth-1-downsampled.png'
     print('fname99=',fname99)
     img = imread(fname99)
     ax.imshow(img, origin='upper', transform=ccrs.PlateCarree(),
@@ -231,7 +235,7 @@ ax.add_feature(cfeature.COASTLINE)
 ax.add_feature(cfeature.BORDERS)
 ax.add_feature(states_provinces, edgecolor='gray')
 
-fig.canvas.set_window_title('RBN Analysis for '+P.CALL+' from '+fname)
+fig.canvas.setWindowTitle('RBN Analysis for '+P.CALL+' from '+fname)
 #ax.set_title('RBN Analysis for '+P.CALL+' from '+fname)
 ax.set_aspect('auto')
 fig.tight_layout(pad=0)
@@ -280,8 +284,13 @@ for spot in myspots:
 
 # Plot my location        
 station = Station(P.CALL)
-lat=station.latitude
-lon=-station.longitude
+print("\nStation=",end=' ')
+pprint(vars(station))
+if P.GRIDSQ!=None:
+    lat,lon=maidenhead2latlon(P.GRIDSQ)
+else:
+    lat=station.latitude
+    lon=-station.longitude
 x,y = proj.transform_point(lon,lat, ccrs.Geodetic())
 line=ax.plot(x,y,'o',color='orange',label=P.CALL)
 lines.append(line[0])
@@ -339,7 +348,7 @@ print('Min. speed=',mn,' wpm')
 print('Max. speed=',mx,' wpm')
 print('Most common speed=',mode,' wpm')
 
-fig.canvas.set_window_title('Runner Speed Distribution')
+fig.canvas.setWindowTitle('Runner Speed Distribution')
 ax.set_title('CW Speed Distribution for '+fname+'\nfrom '+str(date0)+' to '+str(date1))
 ax.grid(True)
 ax.set_xlabel('WPM')
