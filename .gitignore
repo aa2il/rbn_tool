@@ -20,3 +20,4 @@
 /build/*
 /dist/rbn_tool
 /rbn_tool.spec
+/*.zip
