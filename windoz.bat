@@ -1,19 +1,31 @@
 @echo off
+goto BUILD
+echo %DATE% %TIME%
 echo.
-echo Notes about how to run RBN analysis tool on Windoze 10
+echo Notes about how to compile and run RBN analysis tool on Windoze 10/11.
 echo.
 echo Already should have matplotlib, cartopy installed from demos
-echo Need a few more libs:
+      pip install -r requirements.txt
 echo.
-echo    pip install xlrd unidecode pyhamtools serial
+echo To run the script directly under python (example):
 echo.
-echo To run (example):
+      rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
 echo.
-echo    rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
+:BUILD       
 echo.
-echo To compile (works under both linux and windoz):
+echo To compile (works under both linux and windoz - takes a long time):
 echo.
-echo         pyinstaller --onefile rbn_tool.py
-echo         dist\rbn_tool.exe 20220728.csv -t1 3 -hours 1 -na
+      pyinstaller --onefile rbn_tool.py
+      copy 20220728.csv dist
+      copy Release_Notes.txt dist
+echo.
+echo To test binary:
+      dist\rbn_tool.exe 20220728.csv -t1 3 -hours 1 -na
+echo.
+echo Run Inno Setup Compiler and follow the prompts to create an installer
+echo This installer works on Windoz 10 and Bottles!
+echo Be sure to include a sample RBN file, e.g. 20220728.csv
+echo.
+echo %DATE% %TIME%
 echo.
 

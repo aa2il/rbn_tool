@@ -46,6 +46,10 @@ from utilities import freq2band
 
 ################################################################################
 
+VERSION='1.0'
+
+################################################################################
+
 # Structure to contain processing params
 class PARAMS:
     def __init__(self):
@@ -103,7 +107,7 @@ class PARAMS:
 ################################################################################
 
 print("\n\n***********************************************************************************")
-print("\nStarting RBN Plotter  ...")
+print('\nStarting RBN Plotter v'+VERSION+' ...')
 P=PARAMS()
 print("\nP=",end=' ')
 #print "\nP=",
@@ -123,10 +127,10 @@ for fname in P.fnames:
     data+=data2
     print('hdr=',hdr)
     print('No. records=',len(data2),len(data))
-    print('data2[0]=',data2[0])
-    print('data2[1]=',data2[1])
+    #print('data2[0]=',data2[0])
+    #print('data2[1]=',data2[1])
     #print('data2[-2]=',data2[-2])
-    print('data2[-1]=',data2[-1])
+    #print('data2[-1]=',data2[-1])
 
 #sys.exit(0)
 
@@ -205,7 +209,9 @@ print('There are ',len(myspots),'spots belonging to',P.CALL,'\n')
 
 # Create the map
 print('\nGenerating map ...')
-fig = plt.figure()
+#fig = plt.figure(num='RBN Analysis for '+P.CALL+' from '+fname)
+fig = plt.figure(num='RBN Analysis for '+P.CALL+
+                 ' from '+str(date0)+' to '+str(date1))
 lon0=-75
 proj=ccrs.PlateCarree(central_longitude=lon0) 
 ax = fig.add_subplot(1, 1, 1,projection=proj)
@@ -235,8 +241,7 @@ ax.add_feature(cfeature.COASTLINE)
 ax.add_feature(cfeature.BORDERS)
 ax.add_feature(states_provinces, edgecolor='gray')
 
-fig.canvas.setWindowTitle('RBN Analysis for '+P.CALL+' from '+fname)
-#ax.set_title('RBN Analysis for '+P.CALL+' from '+fname)
+# Expand map to fill canvas
 ax.set_aspect('auto')
 fig.tight_layout(pad=0)
 
@@ -323,7 +328,7 @@ mn=np.min(speeds)
 mx=np.max(speeds)
 bins=range(mn,mx+1)
 
-fig, ax = plt.subplots()
+fig,ax = plt.subplots(num='Speed Analysis')
 h,b,p=ax.hist(speeds,bins=bins,label='All Calls')
 #h,b,p=ax.hist(speeds,bins=bins,density=True,color='blue')
 h=np.array(h)
@@ -348,8 +353,7 @@ print('Min. speed=',mn,' wpm')
 print('Max. speed=',mx,' wpm')
 print('Most common speed=',mode,' wpm')
 
-fig.canvas.setWindowTitle('Runner Speed Distribution')
-ax.set_title('CW Speed Distribution for '+fname+'\nfrom '+str(date0)+' to '+str(date1))
+ax.set_title('CW Speed Distribution\n'+str(date0)+' to '+str(date1))
 ax.grid(True)
 ax.set_xlabel('WPM')
 ax.set_ylabel('Spot Histogram')
