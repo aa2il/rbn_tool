@@ -31,7 +31,7 @@ echo OLD=$old
 #set OLD="work2"
 
 rm -f DIFFS
-foreach i (*.py DIFF *.bat README.md *.txt)
+foreach i (*.py DIFF *.bat README.md *.txt dist/*.iss)
     echo $i
     set n=`diff -w $old/$i $i | wc -l`
     if( !( -e $old/$i ) )then
@@ -56,5 +56,5 @@ set f=`basename $ROOT`
 echo $f
 if( $f == "acer" )then
     ls $old/dist
-    cp $old/dist/*.exe $old/dist/*.iss $old/dist/Output/*.exe dist
+    cp $old/dist/*.exe $old/dist/Output/*.exe dist
 endif

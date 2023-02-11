@@ -13,7 +13,7 @@ echo.
 echo.
 :BUILD       
 echo.
-echo To compile (works under both linux and windoz - takes a long time):
+echo To compile (works under both linux and windoz - takes a long time:
 echo.
       pyinstaller --onefile rbn_tool.py
       copy 20220728.csv dist

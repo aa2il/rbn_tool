@@ -1,7 +1,17 @@
  RBN Analysis Tool - by AA2IL
 ------------------------------
 
-Tool to analyze the spot data from the Reverse Beacon Network.  See README.md for usage examples.
+Tool to analyze the spot data from the Reverse Beacon Network.
+
+Sample usage - To see where I was being heard while running during one of the recent CWTs (0300 session on July 28, 2022),
+
+rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
+
+-t1 specifies the start time in hours UTC
+-hours specifies the duration of the interval of interest
+-na filters spots to only those in North America 
+
+See README.md for more usage examples.  Download the archived RBN data from https://www.reversebeacon.net/raw_data .                                                
 
 This app is written in python 3.  The python script rbn_tool.py can be run under linux or windoz 10/11.  Stand-alone execuatables for linux and windoz 10/11 have been made using pyinstaller.  Complete source code and build files are available at https://github.com/aa2il/rbn_tool .
 
@@ -18,6 +28,10 @@ None
 ------------------------------------------------------------------------------
 
 Revision history:
+
+Version 1.01 - Feb. 2023
+
+Minor bug fixes.
 
 Version 1.0 - Feb. 2023
 

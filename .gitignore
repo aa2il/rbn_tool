@@ -21,3 +21,5 @@
 /dist/rbn_tool
 /rbn_tool.spec
 /*.zip
+/dist/rbn_tool.exe
+/dist/rbn_tool_setup.exe

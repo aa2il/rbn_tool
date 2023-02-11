@@ -36,6 +36,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\Joea\Python\rbn_tool\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Joea\Python\data\50-natural-earth-1-downsampled.png"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Joea\Python\rbn_tool\Release_Notes.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Joea\Python\rbn_tool\20220728.csv"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

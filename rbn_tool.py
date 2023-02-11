@@ -42,11 +42,11 @@ from settings import *
 
 from dx.spot_processing import Station
 from latlon2maiden import *
-from utilities import freq2band
+from utilities import freq2band,find_resource_file
 
 ################################################################################
 
-VERSION='1.0'
+VERSION='1.01'
 
 ################################################################################
 
@@ -222,7 +222,7 @@ if False:
     ax.stock_img()
 else:
     # ... so we load image directly instead
-    fname99='../data/50-natural-earth-1-downsampled.png'
+    fname99=find_resource_file('50-natural-earth-1-downsampled.png')
     print('fname99=',fname99)
     img = imread(fname99)
     ax.imshow(img, origin='upper', transform=ccrs.PlateCarree(),
