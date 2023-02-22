@@ -333,7 +333,7 @@ h,b,p=ax.hist(speeds,bins=bins,label='All Calls')
 #h,b,p=ax.hist(speeds,bins=bins,density=True,color='blue')
 h=np.array(h)
 
-if P.CALL2:
+if P.CALL2 and sum(speeds2)>0:
     ax2 = ax.twinx()
     h2,b2,p2=ax2.hist(speeds2,bins=bins,color='red',label=P.CALL,histtype='step')
     #h2,b2,p2=ax.hist(speeds2,bins=bins,density=True,color='red')
@@ -360,7 +360,7 @@ ax.set_ylabel('Spot Histogram')
 #ax.set_ylabel('PMF')
 ax.set_xlim(10,50)
 ax.legend(loc='upper left')
-if P.CALL2:
+if P.CALL2 and sum(speeds2)>0:
     ax2.legend(loc='upper right')
 
 plt.show()
