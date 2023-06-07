@@ -94,11 +94,12 @@ class PARAMS:
         else:
             self.conts=['NA','SA','OC','EU','AS','AF']
 
-        self.CALL2=args.call
         if args.call==None:
             self.CALL  = self.SETTINGS['MY_CALL'].replace('/','_')
+            self.CALL2 = None
         else:
             self.CALL  = args.call.upper()
+            self.CALL2 = args.call.upper()
 
         self.GRIDSQ=args.grid
 
@@ -315,7 +316,8 @@ print('\nSpeed analysis ...')
 speeds=[]
 speeds2=[]
 for spot in allspots:
-    mode=spot['tx_mode'] 
+    mode=spot['tx_mode']
+    #print(mode,spot['dx'])
     if mode=='CW':
         speed=int(spot['speed'])
         speeds.append(speed)
@@ -333,6 +335,7 @@ h,b,p=ax.hist(speeds,bins=bins,label='All Calls')
 #h,b,p=ax.hist(speeds,bins=bins,density=True,color='blue')
 h=np.array(h)
 
+#print('P.CALL2=',P.CALL2,'\tspeeds2=',speeds2)
 if P.CALL2 and sum(speeds2)>0:
     ax2 = ax.twinx()
     h2,b2,p2=ax2.hist(speeds2,bins=bins,color='red',label=P.CALL,histtype='step')
