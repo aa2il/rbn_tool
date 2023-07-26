@@ -121,5 +121,7 @@ rbn_tool.py 20220709.zip 20220710.zip -t1 12 -hours 24 -na
 # Installation for Windoz:
 
 1) Best bet is to use mini-conda and follow the instructions above.
-2) If you want/need a windoz binary, email me and I'll put one together for you.
+2) There is an older compiled binary/installer listed on the right panel
+   of this screen.  If you want/need a more recent binary, email me
+   or follow the steps in windoz.bat to build it from the source.
 
