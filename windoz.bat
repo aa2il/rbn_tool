@@ -4,7 +4,6 @@ echo %DATE% %TIME%
 echo.
 echo Notes about how to compile and run RBN analysis tool on Windoze 10/11.
 echo.
-echo Already should have matplotlib, cartopy installed from demos
       pip install -r requirements.txt
 echo.
 echo To run the script directly under python (example):
