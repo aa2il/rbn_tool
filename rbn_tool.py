@@ -1,10 +1,18 @@
-#! /usr/bin/python3
+#! /home/joea/miniconda3/envs/aa2il/bin/python -u
+#
+# NEW: /home/joea/miniconda3/envs/aa2il/bin/python -u
+# OLD: /usr/bin/python3 -u 
 ################################################################################
 #
 # rbn.py - Rev 2.0
-# Copyright (C) 2022-4 by Joseph B. Attili, aa2il AT arrl DOT net
+# Copyright (C) 2022-5 by Joseph B. Attili, joe DOT aa2il AT gmail DOT com
 #
 # GUI to plot spots from reverse beacon network
+#
+# Examples:
+#              rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
+#
+#              rbn_tool.py 20250211
 #
 ################################################################################
 #
@@ -117,11 +125,45 @@ pprint(vars(P))
 # Init
 MY_CALL = P.SETTINGS['MY_CALL'].replace('/','_')
 print('MY_CALL=',MY_CALL)
+DATA_DIR = os.path.expanduser('~/Python/rbn_tool/data/')
 
 # Read CSV format spreadsheet with RBN data
 data=[]
 for fname in P.fnames:
-    data2,hdr=read_csv_file(fname)
+
+    # Check that we have the data locally
+    #fname=DATA_DIR+fname
+    #print(fname)
+    #base=os.path.basename(fname)
+    #print('base=',base)
+    p=os.path.splitext(fname)
+    print('p=',p)
+    base=p[0]
+    print('base=',base)
+    ext=p[1]
+    print('ext=',ext)
+    #sys.exit(0)
+    
+    exists=os.path.exists(DATA_DIR+fname)
+    if not exists and ext=='':
+        if os.path.exists(DATA_DIR+fname+'.zip'):
+            exists=True
+            fname=fname+'.zip'
+        elif os.path.exists(DATA_DIR+fname+'.csv'):
+            exists=True
+            fname=fname+'.csv'
+        else:
+            exists=False
+            fname=fname+'.zip'
+    print(exists)
+    if not exists:
+        print('Retrieving data ... - NEEDS more work!!!')
+        url='https://data.reversebeacon.net/rbn_history/'
+        cmd='wget '+url+fname+' '+DATA_DIR
+        print(cmd)
+        sys.exit(0)
+    
+    data2,hdr=read_csv_file(DATA_DIR+fname)
     if 'dx' not in data2[-1]:
          data2.pop(-1)
     

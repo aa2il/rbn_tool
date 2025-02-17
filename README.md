@@ -4,7 +4,7 @@ Tool to analyze the spot data from the Reverse Beacon Network.  I originally dev
 
 Example usage - To see where I was being heard while running during one of the recent CWTs (0300 session on July 28, 2022), first download the data for that day from https://www.reversebeacon.net/raw_data/ and then run
                                                 
-rbn_tool.py 20220728.csv -t1 3 -hours 1 -na
+rbn_tool.py 20220728 -t1 3 -hours 1 -na
 
 -t1 specifies the start time in hours UTC
 -hours specifies the duration of the interval of interest
@@ -27,9 +27,9 @@ rbn_tool.py 2022080[67].zip -t1 18 -hours 12 -na
 
 ![Screen Shot]( Docs/naqpcw_aug2021.png)
 
-Here is the speed distribution for the recent IARU HF Championships:
+Here is the speed distribution for the 2022 IARU HF Championships:
 
-rbn_tool.py 20220709.zip 20220710.zip -t1 12 -hours 24 -na
+rbn_tool.py 20220709 20220710 -t1 12 -hours 24 -na
 
 ![Screen Shot]( Docs/iaru_2022.png)
 
