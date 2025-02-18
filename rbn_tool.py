@@ -159,9 +159,10 @@ for fname in P.fnames:
     if not exists:
         print('Retrieving data ... - NEEDS more work!!!')
         url='https://data.reversebeacon.net/rbn_history/'
-        cmd='wget '+url+fname+' '+DATA_DIR
+        cmd='cd '+DATA_DIR+' ; wget '+url+fname
         print(cmd)
-        sys.exit(0)
+        os.system(cmd)
+        #sys.exit(0)
     
     data2,hdr=read_csv_file(DATA_DIR+fname)
     if 'dx' not in data2[-1]:
