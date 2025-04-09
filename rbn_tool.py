@@ -48,7 +48,7 @@ from shapely import geometry
 from datetime import timedelta,datetime
 from settings import *
 
-from dx.spot_processing import Station
+from dx import load_cty_info,Station
 from latlon2maiden import *
 from utilities import freq2band,find_resource_file
 
@@ -91,6 +91,9 @@ class PARAMS:
 
         self.SETTINGS,junk = read_settings('.keyerrc')
 
+        # Take care of non-standard location of support files
+        load_cty_info(DIR=self.SETTINGS['MY_DATA_DIR'])
+        
         self.fnames=args.Files
         #print('fnames=',self.fnames)
 
