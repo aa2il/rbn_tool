@@ -16,6 +16,13 @@ pyhamtools
 scipy
 pyqtgraph
 
+psutil
+pyaudio
+pytz
+
+# Need this for matplotlib back-end
+pyqt6
+
 # For windows
 #pyinstaller
 #proj

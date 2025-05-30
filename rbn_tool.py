@@ -1,3 +1,5 @@
+#!/usr/bin/env -S uv run --script
+#
 #! /home/joea/miniconda3/envs/aa2il/bin/python -u
 #
 # NEW: /home/joea/miniconda3/envs/aa2il/bin/python -u
@@ -34,6 +36,13 @@ import sys
 from unidecode import unidecode
 import argparse
 from pprint import pprint
+
+# Fix problems with recent python releases
+# Qt6Agg' is not a valid value for backend; supported values are
+# ['gtk3agg', 'gtk3cairo', 'gtk4agg', 'gtk4cairo', 'macosx', 'nbagg', 'notebook', 'qtagg', 'qtcairo', 'qt5agg', 'qt5cairo', 'tkagg', 'tkcairo', 'webagg', 'wx', 'wxagg', 'wxcairo', 'agg', 'cairo', 'pdf', 'pgf', 'ps', 'svg', 'template']
+if True:
+    import matplotlib
+    matplotlib.use('qtagg')
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
