@@ -1,3 +1,6 @@
+# uv add -r requirements.txt
+#
+# This is how it used to work:
 # pip3 install -r requirements.txt
 #
 # Also need the "libs" and "data" directories which are available in this
@@ -15,9 +18,7 @@ unidecode
 pyhamtools
 scipy
 pyqtgraph
-
 psutil
-pyaudio
 pytz
 
 # Need this for matplotlib back-end
