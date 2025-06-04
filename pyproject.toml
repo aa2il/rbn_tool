@@ -1,0 +1,19 @@
+[project]
+name = "rbn-tool"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cartopy>=0.24.1",
+    "matplotlib>=3.10.3",
+    "psutil>=7.0.0",
+    "pyhamtools>=0.11.0",
+    "pyqt6>=6.9.0",
+    "pyqtgraph>=0.13.7",
+    "pyserial>=3.5",
+    "pytz>=2025.2",
+    "scipy>=1.15.3",
+    "unidecode>=1.4.0",
+    "xlrd>=2.0.1",
+]
