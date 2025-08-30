@@ -61,9 +61,29 @@ from dx import load_cty_info,Station
 from latlon2maiden import *
 from utilities import freq2band,find_resource_file
 
+from dx.spot_processing import Spot,Station
+
 ################################################################################
 
-VERSION='1.01'
+VERSION='1.1'
+
+################################################################################
+
+def Spot2Dict(spot):
+    d={}
+    d['callsign'] = spot.spotter_call
+    d['dx']       = spot.dx_call
+    d['freq']     = spot.frequency
+    d['band']     = str(spot.band)+'m'
+    d['speed']    = spot.wpm
+    d['date']     = str(spot.time).split('+')[0]
+    d['dx_cont']  = spot.dx_station.continent
+    d['tx_mode']  = spot.mode
+
+    cmt = spot.comment.split(' ')
+    d['mode']  = cmt[-1]
+
+    return d
 
 ################################################################################
 
@@ -137,49 +157,96 @@ pprint(vars(P))
 # Init
 MY_CALL = P.SETTINGS['MY_CALL'].replace('/','_')
 print('MY_CALL=',MY_CALL)
-DATA_DIR = os.path.expanduser('~/Python/rbn_tool/data/')
+DATA_DIR = os.path.expanduser('~/Python/rbn_tool/data')
 
 # Read CSV format spreadsheet with RBN data
 data=[]
 for fname in P.fnames:
 
-    # Check that we have the data locally
+    # Check if we have the data locally
     #fname=DATA_DIR+fname
     #print(fname)
     #base=os.path.basename(fname)
     #print('base=',base)
-    p=os.path.splitext(fname)
-    print('p=',p)
-    base=p[0]
-    print('base=',base)
-    ext=p[1]
-    print('ext=',ext)
-    #sys.exit(0)
     
-    exists=os.path.exists(DATA_DIR+fname)
+    #p=os.path.splitext(fname)
+    #print('p=',p)
+    #base=p[0]
+    #print('base=',base)
+    #ext=p[1]
+    #print('ext=',ext)
+
+    path,base,ext=parse_file_name(fname)
+    if path=='':
+        path=DATA_DIR
+    if path[-1]!='/':
+        path += '/'
+    print('path=',path,'\tbase=',base,'ext=',ext)
+    
+    exists=os.path.exists(path+fname)
     if not exists and ext=='':
-        if os.path.exists(DATA_DIR+fname+'.zip'):
+        # If file doesnt exist, check if the zip or csv versions exist
+        if os.path.exists(path+fname+'.zip'):
             exists=True
+            ext='.zip'
             fname=fname+'.zip'
-        elif os.path.exists(DATA_DIR+fname+'.csv'):
+        elif os.path.exists(path+fname+'.csv'):
             exists=True
+            ext='.csv'
             fname=fname+'.csv'
-        else:
-            exists=False
-            fname=fname+'.zip'
-    print(exists)
+    print('exists=',exists,'\tfname=',fname)
+    #sys.exit(0)
+
+    # If we dont have the file locally, try downloading it
     if not exists:
         print('Retrieving data ... - NEEDS more work!!!')
         url='https://data.reversebeacon.net/rbn_history/'
-        cmd='cd '+DATA_DIR+' ; wget '+url+fname
+        cmd='cd '+path+' ; wget '+url+base+'.zip'
         print(cmd)
         os.system(cmd)
         #sys.exit(0)
-    
-    data2,hdr=read_csv_file(DATA_DIR+fname)
-    if 'dx' not in data2[-1]:
-         data2.pop(-1)
-    
+
+    # Read the file
+    if ext in ['.zip','.csv']:
+        
+        # Assume its a zip or csv file from the RBN archives
+        data2,hdr=read_csv_file(path+base+ext)
+        if 'dx' not in data2[-1]:
+            data2.pop(-1)
+        if False:
+            print(hdr)
+            print(len(data2))
+            for i in range(10):
+                print(data2[i])
+            print(type(data2),type(data2[0]))
+            sys.exit(0)
+            
+    elif ext in ['.DAT']:
+        
+        # Assume its a "ALL+SPOTS" file from bandmapy
+        lines = read_text_file(path+base+ext)
+        print(len(lines))
+        i=0;
+        data2=[]
+        hdr=''
+        for line in lines:
+            i+=1
+            if 'DX de ' in line:
+                obj = Spot(line)
+                d=Spot2Dict(obj)
+                data2.append(d)
+                if i<=10:
+                    print(line)
+                    pprint(vars(obj))
+                    print(d)
+        #print(type(lines),type(obj))
+        #sys.exit(0)
+        
+    else:
+
+        print('\nRBN TOOL - I dont know what I am doing here!!!\n')
+        sys.exit(0)
+        
     data+=data2
     print('hdr=',hdr)
     print('No. records=',len(data2),len(data))
